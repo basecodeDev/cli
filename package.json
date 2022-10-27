@@ -1,6 +1,6 @@
 {
   "name": "@kubibasecode/basecodecli",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Basecode cli will create construct project and create modules.",
   "main": "bin/index.js",
   "bin": {
