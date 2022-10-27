@@ -2,7 +2,7 @@ const shell = require("shelljs");
 const log = require('log-beautify');
 const fs = require('fs')
 
-module.exports = async (args) => {
+const create = async (args) => {
 
     const project_name = args.name || 'construct';
 
@@ -13,4 +13,8 @@ module.exports = async (args) => {
     } else {
         log.error(project_name + ' project already exists');
     }
+}
+
+module.exports = {
+    create
 }

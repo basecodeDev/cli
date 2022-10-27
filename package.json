@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "index.js",
-    "patch-release": "npm version patch && npm publish && git push --follow-tags"
+    "patch-release": "git add . && git commit -a -m  'Version Update' && npm version patch && npm publish && git push --follow-tags"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "dependencies": {
     "commander": "^9.4.1",
     "log-beautify": "^1.2.0",
+    "prompt-sync": "^4.2.0",
     "shelljs": "^0.8.5"
   }
 }
