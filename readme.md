@@ -1,4 +1,9 @@
+# How to install
+```bash
+npm install -g @kubibasecode/basecodecli
+```
+
 # How to run
-´´´bash
+```bash
 constructcli create project_name
 ```
