@@ -4,11 +4,10 @@
   "description": "Basecode cli will create construct project and create modules.",
   "main": "index.js",
   "bin": {
-    "create:project": "bin/index.js"
+    "constructcli": "bin/index.js"
   },
   "scripts": {
-    "patch-release": "npm version patch && npm publish && git push --follow-tags",
-    "git-commit": "git add . && git commit -m \"update\" && git push"
+    "patch-release": "npm version patch && npm publish && git push --follow-tags"
   },
   "repository": {
     "type": "git",
