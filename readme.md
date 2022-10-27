@@ -8,7 +8,7 @@ npm install -g @kubibasecode/basecodecli
 
 ## Create project
 ```bash
-constructcli create project_name
+constructcli create --name project_name
 ```
 
 * Other project helpfull commands
