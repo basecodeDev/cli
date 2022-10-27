@@ -8,32 +8,32 @@ npm install -g @kubibasecode/basecodecli
 
 ## Create project
 ```bash
-construct create project_name
+constructcli create project_name
 ```
 
 * Other project helpfull commands
 
 ### Migration database
 ```bash
-construct db:migrate
+constructcli db:migrate
 ```
 ### Seed database
 ```bash
-construct db:seed
+constructcli db:seed
 ```
 ### Reset database
 ```bash
-construct db:reset
+constructcli db:reset
 ```
 ### Create module
 ```bash
-construct create:module --directory directory_name --database database_name --modulename modulename
+constructcli create:module --directory directory_name --database database_name --modulename modulename
 ```
 ### Delete module
 ```bash
-construct delete:module --directory directory_name
+constructcli delete:module --directory directory_name
 ```
 ### Create tools
 ```bash
-construct create:tools
+constructcli create:tools
 ```
