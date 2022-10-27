@@ -11,7 +11,7 @@ const create = async (args) => {
         shell.exec("git clone git@github.com:basecodeDev/Base.git " + project_name);
         shell.exec("cd " + project_name + " && rm -rf .git && git init");
         shell.exec("cd " + project_name + " && mv app/config/index.sample.js app/config/index.js");
-        shell.exec("cd " + project_name + " && yarn");
+        shell.exec("cd " + project_name + " && yarn install 2> >(grep -v warning 1>&2)");
         log.success(project_name + ' project created successfully');
         log.info(project_name + '/app/config/index.js for configurations');
         log.info(project_name + '/app/modules for modules');
