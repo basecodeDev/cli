@@ -24,7 +24,7 @@ program
     .action(dbMigrate)
 
 program
-    .command('db:migrate')
+    .command('db:seed')
     .description('Database tables will fill with seed data')
     .action(dbSeed)
 
