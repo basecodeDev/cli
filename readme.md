@@ -1,14 +1,18 @@
-# How to install
+# This is our construct.
+![Construct](https://i.pinimg.com/originals/d8/67/2f/d8672fea969d69c9a2f6b383fc35ca29.png)
+
+## Install For Global
 ```bash
 npm install -g @kubibasecode/basecodecli
 ```
 
-* Other project helpfull commands
-
-### Create project
+## Create project
 ```bash
 constructcli create project_name
 ```
+
+* Other project helpfull commands
+
 ### Migration database
 ```bash
 constructcli db:migrate
@@ -17,22 +21,18 @@ constructcli db:migrate
 ```bash
 constructcli db:seed
 ```
-
 ### Reset database
 ```bash
 constructcli db:reset
 ```
-
 ### Create module
 ```bash
 constructcli create:module --directory directory_name --database database_name --modulename modulename
 ```
-
 ### Delete module
 ```bash
 constructcli delete:module --directory directory_name
 ```
-
 ### Create tools
 ```bash
 constructcli create:tools
