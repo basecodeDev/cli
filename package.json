@@ -1,12 +1,13 @@
 {
   "name": "@kubibasecode/basecodecli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Basecode cli will create construct project and create modules.",
-  "main": "index.js",
+  "main": "bin/index.js",
   "bin": {
     "constructcli": "bin/index.js"
   },
   "scripts": {
+    "start": "bin/index.js",
     "patch-release": "npm version patch && npm publish && git push --follow-tags"
   },
   "repository": {
@@ -20,6 +21,8 @@
   },
   "homepage": "https://github.com/basecodeDev/cli#readme",
   "dependencies": {
+    "commander": "^9.4.1",
+    "log-beautify": "^1.2.0",
     "shelljs": "^0.8.5"
   }
 }
