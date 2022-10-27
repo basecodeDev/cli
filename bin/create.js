@@ -2,6 +2,10 @@ const shell = require("shelljs");
 const log = require('log-beautify');
 const fs = require('fs')
 
+log.setSymbols({
+    info: "⚙️"
+});
+
 const create = async (args) => {
 
     const project_name = args.name || 'construct';
@@ -11,7 +15,6 @@ const create = async (args) => {
         shell.exec("git clone git@github.com:basecodeDev/Base.git " + project_name);
         shell.exec("cd " + project_name + " && rm -rf .git && git init");
         shell.exec("cd " + project_name + " && m app/config/index.sample.js app/config/index.js");
-        shell.exec("cd " + project_name + " && yarn install 2>| grep -v warning 1>&2");
         log.success(project_name + ' project created successfully');
         log.info(project_name + '/app/config/index.js for configurations');
         log.info(project_name + '/app/modules for modules');
@@ -19,6 +22,8 @@ const create = async (args) => {
         log.info(project_name + '/app/migrations for custom migrations');
         log.info(project_name + '/app/tests for manual tests');
         log.info(project_name + '/app/install.json for third party modules');
+        log.info('Yarn packages installing...')
+        shell.exec("cd " + project_name + " && yarn");
     } else {
         log.error(project_name + ' project already exists');
     }
