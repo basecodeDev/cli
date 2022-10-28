@@ -9,7 +9,7 @@
   "scripts": {
     "start": "index.js",
     "git-push": "git add . && git commit -a -m  'Version Update'",
-    "patch-release": "npm version patch && npm publish && git push --follow-tags"
+    "patch-release": "npm version patch && npm publish && git push"
   },
   "repository": {
     "type": "git",
