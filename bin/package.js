@@ -22,21 +22,23 @@ const add = async () => {
             // const response = await axios.get('https://github.com/' + repositories);
             // console.log(response);
             if(!installedPackages.find(n => n.name == moduleName)) {
+                
                 installedPackages.push({
                     name: moduleName,
                     repo: repositories
                 })
+
+                fs.writeFileSync(pathNow + '/app/install.json', JSON.stringify(installedPackages, null, 4));
+
+                if(!await fs.existsSync(pathNow + '/app/modules/'+moduleName)) {
+                    shell.exec("git clone git@github.com:"+repositories+".git "+pathNow+"/app/modules/"+moduleName);
+                }
+
+                log.success('Module installed');
+
             } else {
                 log.error('Module already installed');
             }
-
-            fs.writeFileSync(pathNow + '/app/install.json', JSON.stringify(installedPackages, null, 4));
-
-            if(!await fs.existsSync(pathNow + '/app/modules/'+moduleName)) {
-                shell.exec("git clone git@github.com:"+repositories+".git "+pathNow+"/app/modules/"+moduleName);
-            }
-
-            log.success('Module installed');
 
         } catch (error) {
             log.error('Module repo url not found');
