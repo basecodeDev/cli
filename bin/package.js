@@ -8,12 +8,12 @@ const add = async () => {
     const moduleName = prompt("Module name:");
     const repositories = prompt("Module repo url:");
     
-    if(await fs.existsSync(__dirname + '/app/modules')) {
+    if(await fs.existsSync('app/modules')) {
 
         let installedPackages = []
 
-        if(await fs.existsSync(__dirname + '/app/install.json')) {
-            installedPackages = require(__dirname + '/app/install.json');
+        if(await fs.existsSync('app/install.json')) {
+            installedPackages = require('app/install.json');
         }
 
         installedPackages.push({
@@ -21,29 +21,29 @@ const add = async () => {
             repo: repositories
         })
 
-        fs.writeFileSync(__dirname + '/app/install.json', JSON.stringify(installedPackages, null, 4));
+        fs.writeFileSync('app/install.json', JSON.stringify(installedPackages, null, 4));
 
-        if(!await fs.existsSync(__dirname + '/app/modules/'+moduleName)) {
+        if(!await fs.existsSync('app/modules/'+moduleName)) {
             shell.exec("git clone "+repositories+" "+__dirname+"/app/modules/"+moduleName);
         }
 
         log.success('Module installed');
 
     } else {
-        log.error(__dirname + '/app/modules directory not found');
+        log.error('app/modules directory not found');
     }
 
 }
 
 const install = async (args) => {
 
-    if(await fs.existsSync(__dirname + '/app/install.json')) {
+    if(await fs.existsSync('app/install.json')) {
 
-        const installedPackages = require(__dirname + '/app/install.json');
+        const installedPackages = require('app/install.json');
 
         for (let i = 0; i < installedPackages.length; i++) {
             const element = installedPackages[i];
-            if(!await fs.existsSync(__dirname + '/app/modules/'+element.name)) {
+            if(!await fs.existsSync('app/modules/'+element.name)) {
                 shell.exec("git clone "+element.repo+" "+__dirname+"/app/modules/"+element.name);
             }
         }
@@ -51,21 +51,21 @@ const install = async (args) => {
         log.success('Modules installed');
 
     } else {
-        log.error(__dirname + '/app/install.json file not found');
+        log.error('app/install.json file not found');
     }
 
 }
 
 const update = async () => {
 
-    if(await fs.existsSync(__dirname + '/app/install.json')) {
+    if(await fs.existsSync('app/install.json')) {
 
-        const installedPackages = require(__dirname + '/app/install.json');
+        const installedPackages = require('app/install.json');
 
         for (let i = 0; i < installedPackages.length; i++) {
             const element = installedPackages[i];
 
-            if(await fs.existsSync(__dirname + '/app/modules/'+element.name)) {
+            if(await fs.existsSync('app/modules/'+element.name)) {
                 shell.exec("cd "+__dirname+"/app/modules/"+element.name+" && git pull");
             }
         }
@@ -73,7 +73,7 @@ const update = async () => {
         log.success('Modules updated');
 
     } else {
-        log.error(__dirname + 'app/install.json file not found');
+        log.error('app/install.json file not found');
     }
 
 }
