@@ -7,7 +7,7 @@ const add = async () => {
 
     const moduleName = prompt("Module name:");
     const repositories = prompt("Module repo url:");
-    log.info(__dirname + '/app/modules')
+    
     if(await fs.existsSync(__dirname + '/app/modules')) {
 
         let installedPackages = []
@@ -30,7 +30,7 @@ const add = async () => {
         log.success('Module installed');
 
     } else {
-        log.error('app/modules directory not found');
+        log.error(__dirname + '/app/modules directory not found');
     }
 
 }
@@ -51,7 +51,7 @@ const install = async (args) => {
         log.success('Modules installed');
 
     } else {
-        log.error('app/install.json file not found');
+        log.error(__dirname + '/app/install.json file not found');
     }
 
 }
