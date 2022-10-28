@@ -1,10 +1,10 @@
 {
-  "name": "@kubibasecode/basecodecli",
-  "version": "1.0.21",
+  "name": "baseconstruct",
+  "version": "1.0.0",
   "description": "Basecode cli will create construct project and create modules.",
   "main": "bin/index.js",
   "bin": {
-    "constructcli": "index.js"
+    "construct": "index.js"
   },
   "scripts": {
     "start": "index.js",
@@ -26,5 +26,6 @@
     "log-beautify": "^1.2.0",
     "prompt-sync": "^4.2.0",
     "shelljs": "^0.8.5"
-  }
+  },
+  "devDependencies": {}
 }
