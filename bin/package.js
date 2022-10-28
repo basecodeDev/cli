@@ -20,11 +20,15 @@ const add = async () => {
 
         try {
             await axios.get(repositories);
-
-            installedPackages.push({
-                name: moduleName,
-                repo: repositories
-            })
+            
+            if(!installedPackages.find(n => n.name == moduleName)) {
+                installedPackages.push({
+                    name: moduleName,
+                    repo: repositories
+                })
+            } else {
+                log.error('Module already installed');
+            }
 
             fs.writeFileSync(pathNow + '/app/install.json', JSON.stringify(installedPackages, null, 4));
 
