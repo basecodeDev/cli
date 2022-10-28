@@ -33,6 +33,21 @@ construct create:module --directory directory_name --database database_name --mo
 ```bash
 construct delete:module --directory directory_name
 ```
+### Add package
+```bash
+construct add:package
+```
+
+### Install package
+```bash
+construct install:package
+```
+
+### Update package
+```bash
+construct update:package
+```
+
 ### Create tools
 ```bash
 construct create:tools

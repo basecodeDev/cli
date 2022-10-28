@@ -6,6 +6,7 @@ const { create:createProject } = require('./bin/create');
 const { reset:dbReset, migrate:dbMigrate, seed:dbSeed } = require('./bin/db')
 const { create:createModule, del:deleteModule } = require('./bin/module');
 const { create:createTools } = require('./bin/tools');
+const { add:addPackage, install:installPackages, update:updatePackages } = require('./bin/package');
 
 program
     .command('create')
@@ -46,5 +47,20 @@ program
     .command('create:tools')
     .description('From tools directory, tools will create')
     .action(createTools)
+
+program
+    .command('add:package')
+    .description('Add existing package to app/install.json')
+    .action(addPackage)
+
+program
+    .command('install:package')
+    .description('Install packages from app/install.json file')
+    .action(installPackages)
+
+program
+    .command('update:package')
+    .description('Update packages from app/install.json file')
+    .action(updatePackages)
 
 program.parse()
