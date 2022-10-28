@@ -19,8 +19,8 @@ const add = async () => {
         }
 
         try {
-            await axios.get('https://github.com/' + repositories);
-            
+            // const response = await axios.get('https://github.com/' + repositories);
+            // console.log(response);
             if(!installedPackages.find(n => n.name == moduleName)) {
                 installedPackages.push({
                     name: moduleName,
