@@ -40,6 +40,7 @@ const add = async () => {
 
         } catch (error) {
             log.error('Module repo url not found');
+            log.error(error)
         }
 
     } else {
