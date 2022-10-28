@@ -16,6 +16,7 @@ const add = async () => {
 
         if(await fs.existsSync(pathNow + '/app/install.json')) {
             installedPackages = require(pathNow + '/app/install.json');
+            installedPackages = typeof installedPackages == 'object' ? installedPackages : [];
         }
 
         try {
