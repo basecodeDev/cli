@@ -2,6 +2,7 @@ const shell = require("shelljs");
 const log = require('log-beautify');
 const prompt = require("prompt-sync")({ sigint: true });
 const fs = require('fs');
+const axios = require('axios');
 const pathNow = process.cwd()
 
 const add = async () => {
@@ -17,18 +18,25 @@ const add = async () => {
             installedPackages = require(pathNow + '/app/install.json');
         }
 
-        installedPackages.push({
-            name: moduleName,
-            repo: repositories
-        })
+        try {
+            await axios.get(repositories);
 
-        fs.writeFileSync(pathNow + '/app/install.json', JSON.stringify(installedPackages, null, 4));
+            installedPackages.push({
+                name: moduleName,
+                repo: repositories
+            })
 
-        if(!await fs.existsSync(pathNow + '/app/modules/'+moduleName)) {
-            shell.exec("git clone "+repositories+" "+pathNow+"/app/modules/"+moduleName);
+            fs.writeFileSync(pathNow + '/app/install.json', JSON.stringify(installedPackages, null, 4));
+
+            if(!await fs.existsSync(pathNow + '/app/modules/'+moduleName)) {
+                shell.exec("git clone "+repositories+" "+pathNow+"/app/modules/"+moduleName);
+            }
+
+            log.success('Module installed');
+
+        } catch (error) {
+            log.error('Module repo url not found');
         }
-
-        log.success('Module installed');
 
     } else {
         log.error(pathNow + '/app/modules directory not found');
