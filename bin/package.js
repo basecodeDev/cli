@@ -8,7 +8,7 @@ const pathNow = process.cwd()
 const add = async () => {
 
     const moduleName = prompt("Module name:");
-    const repositories = prompt("Module repo url:");
+    const repositories = prompt("Module repo name (basecodeDev/Base) :");
     
     if(await fs.existsSync(pathNow + '/app/modules')) {
 
@@ -19,7 +19,7 @@ const add = async () => {
         }
 
         try {
-            await axios.get(repositories);
+            await axios.get('https://github.com/' + repositories);
             
             if(!installedPackages.find(n => n.name == moduleName)) {
                 installedPackages.push({
@@ -33,7 +33,7 @@ const add = async () => {
             fs.writeFileSync(pathNow + '/app/install.json', JSON.stringify(installedPackages, null, 4));
 
             if(!await fs.existsSync(pathNow + '/app/modules/'+moduleName)) {
-                shell.exec("git clone "+repositories+" "+pathNow+"/app/modules/"+moduleName);
+                shell.exec("git clone git@github.com:"+repositories+".git "+pathNow+"/app/modules/"+moduleName);
             }
 
             log.success('Module installed');
@@ -57,7 +57,7 @@ const install = async (args) => {
         for (let i = 0; i < installedPackages.length; i++) {
             const element = installedPackages[i];
             if(!await fs.existsSync(pathNow + '/app/modules/'+element.name)) {
-                shell.exec("git clone "+element.repo+" "+pathNow+"/app/modules/"+element.name);
+                shell.exec("git clone git@github.com:"+element.repo+".git "+pathNow+"/app/modules/"+element.name);
             }
         }
 
