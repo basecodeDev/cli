@@ -7,7 +7,7 @@ const add = async () => {
 
     const moduleName = prompt("Module name:");
     const repositories = prompt("Module repo url:");
-
+    log.info(__dirname + '/app/modules')
     if(await fs.existsSync(__dirname + '/app/modules')) {
 
         let installedPackages = []
