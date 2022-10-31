@@ -58,6 +58,9 @@ const editConfig = async (configFile = '') => {
 
     if(await fs.existsSync(pathNow + '/' + configFile)) {
 
+        const readConfig = require(pathNow + '/' + configFile);
+        const config = Object.assign({}, readConfig)
+
         const installedMysql = prompt("Did you install mysql ? (y/n) ");
 
         if(installedMysql === 'y') {
@@ -99,6 +102,7 @@ const editConfig = async (configFile = '') => {
                 createmysql.database = mysqlDatabase != '' ? mysqlDatabase : createmysql.database;
             }
 
+            config.mysql = createmysql;
         }
 
         const defaultAdminAsk = prompt("Default admin username (administrator) ?");
@@ -113,10 +117,6 @@ const editConfig = async (configFile = '') => {
         const siteInfoEmailAsk = prompt("Site email (info@basecode.al) ?");
         const siteInfoEmail = siteInfoEmailAsk != '' ? siteInfoEmailAsk : 'info@basecode.al'
 
-        const readConfig = require(pathNow + '/' + configFile);
-        const config = Object.assign({}, readConfig)
-
-        config.mysql = createmysql;
         config.defaultadmin.username = defaultAdmin;
         config.defaultadmin.password = defaultAdminPassword;
         config.siteinfo.name = siteInfoName;
