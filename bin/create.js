@@ -38,12 +38,12 @@ const create = async (args = undefined) => {
         log.info(baseDirectoryPath + '/app/tests for manual tests');
         log.info(baseDirectoryPath + '/app/install.json for third party modules');
         log.info('Yarn packages installing...')
-        shell.exec("cd " + baseDirectoryPath + " && yarn");
+        // shell.exec("cd " + baseDirectoryPath + " && yarn");
 
         if(installPanel === 'y') {
             log.info('Installing ui panel...');
             shell.exec("cd " + project_name + "/ui && git clone git@github.com:basecodeDev/Panel-Frontend.git panel");
-            shell.exec("cd " + project_name + "/ui/panel && yarn");
+            // shell.exec("cd " + project_name + "/ui/panel && yarn");
             log.info('Yarn packages installing...')
         }
 
