@@ -78,7 +78,7 @@ const editConfig = async (configFile = '') => {
                 user: 'root',
                 pass: '',
                 port: 3306,
-                database: 'construct' 
+                db: 'construct' 
             }
 
             const mysqlHostAsk = prompt("Mysql host ("+createmysql.host+") : ");
@@ -105,10 +105,10 @@ const editConfig = async (configFile = '') => {
                 createmysql.port = mysqlPortAsk != '' ? mysqlPortAsk : createmysql.port;
             }
 
-            const mysqlDatabase = prompt("Mysql database ("+createmysql.database+") : ");
+            const mysqlDatabase = prompt("Mysql database ("+createmysql.db+") : ");
 
             if(mysqlDatabase) {
-                createmysql.database = mysqlDatabase != '' ? mysqlDatabase : createmysql.database;
+                createmysql.db = mysqlDatabase != '' ? mysqlDatabase : createmysql.db;
             }
 
             config.mysql = createmysql;
