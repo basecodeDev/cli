@@ -119,8 +119,8 @@ const editConfig = async (configFile = '') => {
 
         config.defaultadmin.username = defaultAdmin;
         config.defaultadmin.password = defaultAdminPassword;
-        config.siteinfo.name = siteInfoName;
-        config.siteinfo.email = siteInfoEmail;
+        config.siteInfo.name = siteInfoName;
+        config.siteInfo.email = siteInfoEmail;
 
         const configString = JSON.stringify(config, null, 4);
         await fs.writeFileSync(pathNow + '/' + configFile, configString);
