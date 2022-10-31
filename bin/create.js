@@ -60,6 +60,7 @@ const create = async (args = undefined) => {
         }
         process.stdout.clearLine();
         process.stdout.clearLine();
+        process.stdout.clearLine();
 
         console.log(chalk.success.bold.underline('Run admin project:' + baseDirectoryPath + ' -> yarn admin'));
         process.stdout.clearLine()
