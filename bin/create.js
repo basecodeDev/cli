@@ -72,31 +72,31 @@ const editConfig = async (configFile = '') => {
                 database: 'construct' 
             }
 
-            const mysqlHostAsk = prompt("Mysql host ("+createmysql.host+") ?");
+            const mysqlHostAsk = prompt("Mysql host ("+createmysql.host+") : ");
 
             if(mysqlHostAsk) {
                 createmysql.host = mysqlHostAsk != '' ? mysqlHostAsk : createmysql.host;
             }
 
-            const mysqlUsernameAsk = prompt("Mysql username ("+createmysql.user+") ?");
+            const mysqlUsernameAsk = prompt("Mysql username ("+createmysql.user+") : ");
 
             if(mysqlUsernameAsk) {
                 createmysql.user = mysqlUsernameAsk != '' ? mysqlUsernameAsk : createmysql.user;
             }
 
-            const mysqlPasswordAsk = prompt("Mysql password ("+createmysql.pass+") ?");
+            const mysqlPasswordAsk = prompt("Mysql password ("+createmysql.pass+") : ");
 
             if(mysqlPasswordAsk) {
                 createmysql.pass = mysqlPasswordAsk != '' ? mysqlPasswordAsk : createmysql.pass;
             }
 
-            const mysqlPortAsk = prompt("Mysql port ("+createmysql.port+") ?");
+            const mysqlPortAsk = prompt("Mysql port ("+createmysql.port+") : ");
 
             if(mysqlPortAsk) {
                 createmysql.port = mysqlPortAsk != '' ? mysqlPortAsk : createmysql.port;
             }
 
-            const mysqlDatabase = prompt("Mysql database ("+createmysql.database+") ?");
+            const mysqlDatabase = prompt("Mysql database ("+createmysql.database+") : ");
 
             if(mysqlDatabase) {
                 createmysql.database = mysqlDatabase != '' ? mysqlDatabase : createmysql.database;
@@ -105,16 +105,16 @@ const editConfig = async (configFile = '') => {
             config.mysql = createmysql;
         }
 
-        const defaultAdminAsk = prompt("Default admin username (administrator) ?");
+        const defaultAdminAsk = prompt("Default admin username (administrator) : ");
         const defaultAdmin = defaultAdminAsk != '' ? defaultAdminAsk : 'administrator';
 
-        const defaultAdminPasswordAsk = prompt("Default admin password (123456) ?");
+        const defaultAdminPasswordAsk = prompt("Default admin password (123456) : ");
         const defaultAdminPassword = defaultAdminPasswordAsk != '' ? defaultAdminPasswordAsk : '123456';
 
-        const siteInfoNameAsk = prompt("Site name (Construct) ?");
+        const siteInfoNameAsk = prompt("Site name (Construct) : ");
         const siteInfoName = siteInfoNameAsk != '' ? siteInfoNameAsk : 'Construct';
 
-        const siteInfoEmailAsk = prompt("Site email (info@basecode.al) ?");
+        const siteInfoEmailAsk = prompt("Site email (info@basecode.al) : ");
         const siteInfoEmail = siteInfoEmailAsk != '' ? siteInfoEmailAsk : 'info@basecode.al'
 
         config.defaultadmin.username = defaultAdmin;
