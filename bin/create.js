@@ -62,13 +62,13 @@ const create = async (args = undefined) => {
         process.stdout.clearLine();
         process.stdout.clearLine();
 
-        console.log(chalk.success.bold.underline('Run admin project:' + baseDirectoryPath + ' -> yarn admin'));
+        console.log(chalk.green.bold('Run admin project:' + baseDirectoryPath + ' -> ') + chalk.blue.underline('yarn admin'));
         process.stdout.clearLine()
-        console.log(chalk.success.bold.underline('Run api project:' + baseDirectoryPath + ' -> yarn api'));
+        console.log(chalk.green.bold('Run api project:' + baseDirectoryPath + ' -> ') + chalk.blue.underline('yarn api'));
 
         if(installPanel === 'y') {
             process.stdout.clearLine()
-            console.log(chalk.success.bold.underline('Run ui project:' + project_name + '/ui/panel -> yarn serve'));
+            console.log(chalk.green.bold('Run ui project:' + project_name + '/ui/panel -> ') + chalk.blue.underline('yarn serve'));
         }
         
     } else {
