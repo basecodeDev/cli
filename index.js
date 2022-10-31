@@ -7,11 +7,18 @@ const { reset:dbReset, migrate:dbMigrate, seed:dbSeed } = require('./bin/db')
 const { create:createModule, del:deleteModule } = require('./bin/module');
 const { create:createTools } = require('./bin/tools');
 const { add:addPackage, install:installPackages, update:updatePackages } = require('./bin/package');
+const packageInfo = require('./package.json');
+
+program
+    .name(packageInfo.name)
+    .description(packageInfo.description)
+    .helpOption('-h, --help', 'Display help for command')
+    .version(packageInfo.version, '-v, --version', 'output the current version');
 
 program
     .command('create')
     .description('Create empty construct project')
-    .option('-n, --name <name>', 'Project name')
+    .argument('name', 'Project name (string) (required)')
     .action(createProject)
 
 program
