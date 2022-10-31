@@ -1,6 +1,7 @@
 const shell = require("shelljs");
 const log = require('log-beautify');
 const fs = require('fs')
+const chalk = require('chalk');
 const prompt = require("prompt-sync")({ sigint: true });
 const pathNow = process.cwd()
 
@@ -56,6 +57,17 @@ const create = async (args = undefined) => {
             if(runMigrationAsk) {
                 shell.exec("cd " + baseDirectoryPath + " && construct db:reset");
             }
+        }
+        process.stdout.clearLine();
+        process.stdout.clearLine();
+
+        console.log(chalk.success.bold.underline('Run admin project:' + baseDirectoryPath + ' -> yarn admin'));
+        process.stdout.clearLine()
+        console.log(chalk.success.bold.underline('Run api project:' + baseDirectoryPath + ' -> yarn api'));
+
+        if(installPanel === 'y') {
+            process.stdout.clearLine()
+            console.log(chalk.success.bold.underline('Run ui project:' + project_name + '/ui/panel -> yarn serve'));
         }
         
     } else {
