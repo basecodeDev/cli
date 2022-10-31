@@ -47,8 +47,16 @@ const create = async (args = undefined) => {
             log.info('Yarn packages installing...')
         }
 
-        await editConfig(baseDirectoryPath + '/app/config/index.js');
+        const mysqlInstall = await editConfig(baseDirectoryPath + '/app/config/index.js');
 
+        if(mysqlInstall) {
+            const runMigrationAsk = prompt("Do you want to run migrations & seeds ? (y/n) ");
+
+            if(runMigrationAsk) {
+                shell.exec("cd " + baseDirectoryPath + " && construct db:reset");
+            }
+        }
+        
     } else {
         log.error(project_name + ' project already exists');
     }
@@ -124,8 +132,14 @@ const editConfig = async (configFile = '') => {
 
         const configString = JSON.stringify(config, null, 4);
         await fs.writeFileSync(pathNow + '/' + configFile, configString);
-    }
+        log.success('Config file edited successfully');
 
+        if(installedMysql === 'y') {
+            log.info('Mysql configuration saved');
+        }
+
+        return installedMysql === 'y'
+    }
 }
 
 module.exports = {
