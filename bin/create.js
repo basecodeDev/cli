@@ -37,6 +37,9 @@ const create = async (args = undefined) => {
         log.info(baseDirectoryPath + '/app/migrations for custom migrations');
         log.info(baseDirectoryPath + '/app/tests for manual tests');
         log.info(baseDirectoryPath + '/app/install.json for third party modules');
+
+        const mysqlInstall = await editConfig(baseDirectoryPath + '/app/config/index.js');
+
         log.info('Yarn packages installing...')
         shell.exec("cd " + baseDirectoryPath + " && yarn");
 
@@ -46,8 +49,6 @@ const create = async (args = undefined) => {
             shell.exec("cd " + project_name + "/ui/panel && yarn");
             log.info('Yarn packages installing...')
         }
-
-        const mysqlInstall = await editConfig(baseDirectoryPath + '/app/config/index.js');
 
         if(mysqlInstall) {
             const runMigrationAsk = prompt("Do you want to run migrations & seeds ? (y/n) ");
