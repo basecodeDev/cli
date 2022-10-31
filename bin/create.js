@@ -20,7 +20,7 @@ const create = async (args = undefined) => {
 
         if(installPanel === 'y') {
             baseDirectoryPath = project_name + '/base';
-            shell.exec("mkdir "+ project_name);
+            shell.exec("mkdir "+ project_name + "&& mkdir "+ project_name + "/ui");
             shell.exec("cd " + project_name + " && git clone git@github.com:basecodeDev/Base.git base");
         } else {
             shell.exec("git clone git@github.com:basecodeDev/Base.git " + project_name);
@@ -42,7 +42,6 @@ const create = async (args = undefined) => {
 
         if(installPanel === 'y') {
             log.info('Installing ui panel...');
-            shell.exec("cd " + project_name + " && mkdir "+ project_name + "/ui");
             shell.exec("cd " + project_name + "/ui && git clone git@github.com:basecodeDev/Panel-Frontend.git panel");
             shell.exec("cd " + project_name + "/ui/panel && yarn");
             log.info('Yarn packages installing...')
@@ -114,14 +113,17 @@ const editConfig = async (configFile = '') => {
         const siteInfoEmailAsk = prompt("Site email (info@basecode.al) ?");
         const siteInfoEmail = siteInfoEmailAsk != '' ? siteInfoEmailAsk : 'info@basecode.al'
 
-        const readConfig = await fs.readFileSync(pathNow + '/' + configFile, 'utf8');
-        const config = await JSON.parse(readConfig);
+        const readConfig = require(pathNow + '/' + configFile);
+        const config = Object.assign({}, readConfig)
 
         config.mysql = createmysql;
         config.defaultadmin.username = defaultAdmin;
         config.defaultadmin.password = defaultAdminPassword;
         config.siteinfo.name = siteInfoName;
         config.siteinfo.email = siteInfoEmail;
+
+        const configString = JSON.stringify(config, null, 4);
+        await fs.writeFileSync(pathNow + '/' + configFile, configString);
     }
 
 }
