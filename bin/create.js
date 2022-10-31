@@ -5,7 +5,7 @@ const prompt = require("prompt-sync")({ sigint: true });
 const pathNow = process.cwd()
 
 log.setSymbols({
-    info: "⚙️"
+    info: "⚙️ "
 });
 
 const create = async (args = undefined) => {
@@ -131,7 +131,7 @@ const editConfig = async (configFile = '') => {
         config.siteInfo.name = siteInfoName;
         config.siteInfo.email = siteInfoEmail;
 
-        const configString = JSON.stringify(config, null, 4);
+        const configString = 'module.exports = Object.freeze(' + JSON.stringify(config, null, 4) + ');';
         await fs.writeFileSync(pathNow + '/' + configFile, configString);
         log.success('Config file edited successfully');
 

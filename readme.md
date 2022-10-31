@@ -3,7 +3,7 @@
 
 ## Install For Global
 ```bash
-npm install -g baseconstruct
+npm install -g baseconstruct@latest
 ```
 
 ## Create project
