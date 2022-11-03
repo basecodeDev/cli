@@ -4,9 +4,8 @@
 const { program } = require('commander');
 const { create:createProject } = require('./bin/create');
 const { reset:dbReset, migrate:dbMigrate, seed:dbSeed } = require('./bin/db')
-const { create:createModule, del:deleteModule } = require('./bin/module');
+const { create:createModule, del:deleteModule, add:addModule, install:installModules, update:updateModules } = require('./bin/module');
 const { create:createTools } = require('./bin/tools');
-const { add:addPackage, install:installPackages, update:updatePackages } = require('./bin/package');
 const packageInfo = require('./package.json');
 
 program
@@ -37,6 +36,21 @@ program
     .action(dbSeed)
 
 program
+    .command('add:module')
+    .description('Add existing module to app/install.json')
+    .action(addModule)
+
+program
+    .command('install:module')
+    .description('Install modules from app/install.json file')
+    .action(installModules)
+
+program
+    .command('update:module')
+    .description('Update modules from app/install.json file')
+    .action(updateModules)
+    
+program
     .command('create:module')
     .option('-d, --directory <directory>', 'Directory name')
     .option('-db, --database <database>', 'Database table name')
@@ -54,20 +68,5 @@ program
     .command('create:tools')
     .description('From tools directory, tools will create')
     .action(createTools)
-
-program
-    .command('add:package')
-    .description('Add existing package to app/install.json')
-    .action(addPackage)
-
-program
-    .command('install:package')
-    .description('Install packages from app/install.json file')
-    .action(installPackages)
-
-program
-    .command('update:package')
-    .description('Update packages from app/install.json file')
-    .action(updatePackages)
 
 program.parse()
