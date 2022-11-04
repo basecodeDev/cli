@@ -29,7 +29,7 @@ const create = async (args = undefined) => {
 
         shell.exec("npm install -g yarn");
         
-        shell.exec("cd " + baseDirectoryPath + " && rm -rf .git && git init");
+        shell.exec("cd " + baseDirectoryPath + " && rm -rf .git");
         shell.exec("cd " + baseDirectoryPath + " && mv app/config/index.sample.js app/config/index.js");
         log.success(baseDirectoryPath + ' project created successfully');
         log.info(baseDirectoryPath + '/app/config/index.js for configurations');
@@ -50,6 +50,8 @@ const create = async (args = undefined) => {
             shell.exec("cd " + project_name + "/ui/panel && yarn");
             log.info('Yarn packages installing...')
         }
+
+        shell.exec("cd " + project_name + " && rm -rf .git");
 
         if(mysqlInstall) {
             const runMigrationAsk = prompt("Do you want to run migrations & seeds ? (y/n) ");
