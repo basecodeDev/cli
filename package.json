@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start": "index.js",
-    "git-push": "git add . && git commit -a -m  'Version Update'",
-    "patch-release": "npm version patch && npm publish && git push"
+    "push": "git add . && git commit -a -m  'Version Update'",
+    "release": "npm version patch && npm publish && git push"
   },
   "repository": {
     "type": "git",

@@ -48,6 +48,7 @@ const create = async (args = undefined) => {
             log.info('Installing ui panel...');
             shell.exec("cd " + project_name + "/ui && git clone git@github.com:basecodeDev/Panel-Frontend.git panel");
             shell.exec("cd " + project_name + "/ui/panel && yarn");
+            shell.exec("cd " + project_name + "/ui/panel && rm -rf .git");
             log.info('Yarn packages installing...')
         }
 
