@@ -15,17 +15,13 @@ const create = async (args = undefined) => {
     
     if(!await fs.existsSync(project_name)) {
 
-        let baseDirectoryPath = project_name;
+        let baseDirectoryPath = project_name + '/base';
+        baseDirectoryPath = project_name + '/base';
 
         const installPanel = prompt("Do you want to install ui panel ? (y/n) ");
 
-        if(installPanel === 'y') {
-            baseDirectoryPath = project_name + '/base';
-            shell.exec("mkdir "+ project_name + "&& mkdir "+ project_name + "/ui");
-            shell.exec("cd " + project_name + " && git clone git@github.com:basecodeDev/Base.git base");
-        } else {
-            shell.exec("git clone git@github.com:basecodeDev/Base.git " + project_name);
-        }
+        shell.exec("mkdir "+ project_name + "&& mkdir "+ project_name + "/ui && mkdir "+ project_name + "/ui/front");
+        shell.exec("cd " + project_name + " && git clone git@github.com:basecodeDev/Base.git base");
 
         shell.exec("npm install -g yarn");
         
