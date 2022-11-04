@@ -8,8 +8,8 @@ const create = async (args) => {
     if(args.directory) {
         if(args.database) {
             if(args.modulename) {
-                if(await fs.existsSync('node_modules/construct/bin/createModule.js')) {
-                    shell.exec("node node_modules/construct/bin/createModule.js "+args.directory+" "+args.database+" "+args.modulename);
+                if(await fs.existsSync(pathNow + '/node_modules/construct/bin/createModule.js')) {
+                    shell.exec("node "+pathNow+"/node_modules/construct/bin/createModule.js "+args.directory+" "+args.database+" "+args.modulename);
                 } else {
                     log.error('Construct is not installed');
                 }
@@ -30,8 +30,8 @@ const del = async (args) => {
         const areYouSure = prompt("Are you sure about delete "+ args.directory +" module ? (y/n) ");
 
         if(areYouSure == 'y') {
-            if(await fs.existsSync('node_modules/construct/bin/deleteModule.js')) {
-                shell.exec("node node_modules/construct/bin/deleteModule.js " + args.directory);
+            if(await fs.existsSync(pathNow + '/node_modules/construct/bin/deleteModule.js')) {
+                shell.exec("node "+pathNow+"/node_modules/construct/bin/deleteModule.js " + args.directory);
             } else {
                 log.error('Construct is not installed');
             }
