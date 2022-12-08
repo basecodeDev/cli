@@ -6,6 +6,7 @@ const { create:createProject } = require('./bin/create');
 const { reset:dbReset, migrate:dbMigrate, seed:dbSeed } = require('./bin/db')
 const { create:createModule, del:deleteModule, add:addModule, install:installModules, update:updateModules } = require('./bin/module');
 const { create:createTools } = require('./bin/tools');
+const { upload:uploadModule } = require('./bin/upload');
 const packageInfo = require('./package.json');
 
 program
@@ -68,5 +69,11 @@ program
     .command('create:tools')
     .description('From tools directory, tools will create')
     .action(createTools)
+
+program
+    .command('upload:module')
+    .description('Upload module to base.al')
+    .argument('name', 'Module name (string) (required)')
+    .action(uploadModule)
 
 program.parse()
