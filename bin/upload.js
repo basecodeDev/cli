@@ -58,6 +58,14 @@ const upload = async (directory = undefined, name = undefined, slug = undefined)
 
 const uploadPackage = async (path, name, slug, user = {}) => {
 
+
+    const package = await checkPackage(slug, user);
+
+    if(package) {
+        log.warning('Package already exists use update:module method');
+        return;
+    }
+
     const form = new FormData();
     const config = {
         headers: {
@@ -73,7 +81,7 @@ const uploadPackage = async (path, name, slug, user = {}) => {
     const { data } = await axios.post(baseUrl + 'packages/add', form, config);
 
     if(data.status) {
-        addToInstallJson(slug);
+        addToInstallJson(slug, package);
         log.success('Package has been uploaded successfully');
     } else {
         log.error('Package upload failed');
@@ -98,14 +106,36 @@ const addToInstallJson = async (slug = '') => {
         installJson = []
     }
 
-    installJson.push({
-        name: slug,
-        version: 1
-    });
+    const searchPackage = installJson.find(n => n.name === slug);
+
+    if(!searchPackage) {
+        installJson.push({
+            name: slug,
+            version: 1
+        });
+    }
 
     await fs.writeFileSync(installJsonPath, JSON.stringify(installJson, null, 4), 'utf8');
 
     return true
+}
+
+const checkPackage = async (slug = '', user = {}) => {
+
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'token': user.token
+        }
+    }
+
+    const { data } = await axios.get(baseUrl + 'packages/show/' + slug, config);
+
+    if(data.status) {
+        return data.data;
+    } else {
+        return false;
+    }
 }
 
 module.exports = {
