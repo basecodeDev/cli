@@ -128,7 +128,7 @@ const get = async (slug = undefined, directory = undefined) => {
 
         const source_dir = pathNow + '/app/modules/' + directory;
 
-        if(!source_dir) {
+        if(!await fs.existsSync(source_dir)) {
             const package = await checkPackage(slug, user);
 
             if(package) {
