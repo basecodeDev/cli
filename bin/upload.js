@@ -112,7 +112,7 @@ const updatePackage = async (path, directory, slug, user = {}) => {
 
         const getLastVersion = package.versions.sort((a,b) => b.version_id - a.version_id)[0];
 
-        addToInstallJson(directory, slug, getLastVersion.version_id);
+        addToInstallJson(directory, slug, ((getLastVersion.version_id || 0) + 1));
         log.success('Package has been uploaded successfully');
     } else {
         log.error('Package upload failed');
