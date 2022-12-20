@@ -129,7 +129,7 @@ const checkPackage = async (slug = '', user = {}) => {
         }
     }
 
-    const { data } = await axios.get(baseUrl + 'packages/show/' + slug, config);
+    const { data } = await axios.get(baseUrl + 'packages/' + slug, config);
 
     if(data.status) {
         return data.data;
