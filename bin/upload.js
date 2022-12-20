@@ -15,40 +15,13 @@ const upload = async (directory = undefined, name = undefined, slug = undefined)
 
         const module_name = directory || 'construct';
 
-        const source_dir = pathNow + '/app/modules/' + module_name;
-        // const source_dir = pathNow + '/bin'; // For testing
-
-        if(!await fs.existsSync(pathNow + '/dist')) {
-            await fs.mkdirSync(pathNow + '/dist');
-        }
-        
-        if(await fs.existsSync(source_dir)) {
-            const output = fs.createWriteStream(pathNow + '/dist/' + module_name + '.zip');
-            const archive = archiver('zip');
-
-            output.on('close', function () {
-                console.log(archive.pointer() + ' total bytes');
-                console.log('archiver has been finalized and the output file descriptor has closed.');
-                
-                if(archive.pointer() > 0) {
-                    uploadPackage(pathNow + '/dist/' + module_name + '.zip', name, slug, user)
-                    log.success('Module uploaded successfully');
-                }
-            });
-
-            archive.on('error', function(err){
-                throw err;
-            });
-
-            archive.pipe(output);
-
-            // append files from a sub-directory, putting its contents at the root of archive
-            archive.directory(source_dir, false);
-
-            archive.finalize();
-        } else {
-            log.error('Module not found');
-        }
+        createZip(module_name, (filePath) => {
+            if(filePath) {
+                uploadPackage(filePath, directory, name, slug, user)
+            } else {
+                log.error('Module not found');
+            }
+        })
 
     } else {
         log.error('Login failed');
@@ -56,7 +29,7 @@ const upload = async (directory = undefined, name = undefined, slug = undefined)
     }
 }
 
-const uploadPackage = async (path, name, slug, user = {}) => {
+const uploadPackage = async (path, directory, name, slug, user = {}) => {
 
 
     const package = await checkPackage(slug, user);
@@ -81,7 +54,7 @@ const uploadPackage = async (path, name, slug, user = {}) => {
     const { data } = await axios.post(baseUrl + 'packages/add', form, config);
 
     if(data.status) {
-        addToInstallJson(path, slug, package);
+        addToInstallJson(directory, slug, package);
         log.success('Package has been uploaded successfully');
     } else {
         log.error('Package upload failed');
@@ -89,7 +62,29 @@ const uploadPackage = async (path, name, slug, user = {}) => {
     }
 }
 
-const update = async (path, slug, user = {}) => {
+const update = async (directory = undefined, slug = undefined) => {
+
+    const user = await login();
+
+    if(user) {
+
+        const module_name = directory || 'construct';
+
+        createZip(module_name, (filePath) => {
+            if(filePath) {
+                updatePackage(filePath, directory, slug, user)
+            } else {
+                log.error('Module not found');
+            }
+        })
+
+    } else {
+        log.error('Login failed');
+        return;
+    }
+}
+
+const updatePackage = async (path, directory, slug, user = {}) => {
 
 
     const package = await checkPackage(slug, user);
@@ -117,7 +112,7 @@ const update = async (path, slug, user = {}) => {
 
         const getLastVersion = package.versions.sort((a,b) => b.version_id - a.version_id)[0];
 
-        addToInstallJson(path, slug, getLastVersion.version_id);
+        addToInstallJson(directory, slug, getLastVersion.version_id);
         log.success('Package has been uploaded successfully');
     } else {
         log.error('Package upload failed');
@@ -145,6 +140,49 @@ const addToInstallJson = async (path = '', slug = '', version = 1) => {
     await fs.writeFileSync(installJsonPath, JSON.stringify(installJson, null, 4), 'utf8');
 
     return true
+}
+
+const createZip = async (module_name = '', callback = () => {}) => {
+
+    const source_dir = pathNow + '/app/modules/' + module_name;
+    // const source_dir = pathNow + '/bin'; // For testing
+
+    if(!await fs.existsSync(pathNow + '/dist')) {
+        await fs.mkdirSync(pathNow + '/dist');
+    }
+    
+    if(await fs.existsSync(source_dir)) {
+        const source_path = pathNow + '/dist/' + module_name + '.zip';
+        const output = fs.createWriteStream(source_path);
+        const archive = archiver('zip');
+
+        output.on('close', function () {
+            console.log(archive.pointer() + ' total bytes');
+            console.log('archiver has been finalized and the output file descriptor has closed.');
+            
+            if(archive.pointer() > 0) {
+                callback(source_path)
+                log.success('Module uploaded successfully');
+            } else {
+                callback(false)
+            }
+        });
+
+        archive.on('error', function(err){
+            throw err;
+        });
+
+        archive.pipe(output);
+
+        // append files from a sub-directory, putting its contents at the root of archive
+        archive.directory(source_dir, false);
+
+        archive.finalize();
+    } else {
+        callback(false)
+        log.error('Module not found');
+    }
+
 }
 
 const checkInstallJson = async () => {
