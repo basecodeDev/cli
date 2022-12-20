@@ -120,13 +120,13 @@ const updatePackage = async (path, directory, slug, user = {}) => {
     }
 }
 
-const get = async (slug = undefined) => {
+const get = async (slug = undefined, directory = undefined) => {
 
     const user = await login();
 
     if(user) {
 
-        const source_dir = pathNow + '/app/modules/' + slug;
+        const source_dir = pathNow + '/app/modules/' + directory;
 
         if(!source_dir) {
             const package = await checkPackage(slug, user);

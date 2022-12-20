@@ -74,6 +74,7 @@ program
     .command('get:module')
     .description('Get module to base.al')
     .argument('slug', 'Slug (string) (required)')
+    .argument('directory', 'Directory (string) (required)')
     .action(getModule)
 
 program.parse()
