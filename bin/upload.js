@@ -81,7 +81,7 @@ const uploadPackage = async (path, name, slug, user = {}) => {
     const { data } = await axios.post(baseUrl + 'packages/add', form, config);
 
     if(data.status) {
-        addToInstallJson(slug, package);
+        addToInstallJson(path, slug, package);
         log.success('Package has been uploaded successfully');
     } else {
         log.error('Package upload failed');
@@ -89,8 +89,66 @@ const uploadPackage = async (path, name, slug, user = {}) => {
     }
 }
 
-const addToInstallJson = async (slug = '') => {
-    
+const update = async (path, slug, user = {}) => {
+
+
+    const package = await checkPackage(slug, user);
+
+    if(!package) {
+        log.warning('Package not exists use upload:module method');
+        return;
+    }
+
+    const form = new FormData();
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'token': user.token
+        }
+    }
+
+    form.append('name', slug);
+    form.append('slug', slug);
+    form.append('package', fs.createReadStream(path));
+
+    const { data } = await axios.post(baseUrl + 'packages/add', form, config);
+
+    if(data.status) {
+
+        const getLastVersion = package.versions.sort((a,b) => b.version_id - a.version_id)[0];
+
+        addToInstallJson(path, slug, getLastVersion.version_id);
+        log.success('Package has been uploaded successfully');
+    } else {
+        log.error('Package upload failed');
+        log.error(data.messages.join(','))
+    }
+}
+
+const addToInstallJson = async (path = '', slug = '', version = 1) => {
+
+    const { installJsonPath, installJson } = await checkInstallJson();
+
+    const searchPackage = installJson.find(n => n.name === slug);
+
+    if(!searchPackage) {
+        installJson.push({
+            name: slug,
+            directory : path,
+            version: version
+        });
+    } else {
+        searchPackage.directory = path;
+        searchPackage.version = version;
+    }
+
+    await fs.writeFileSync(installJsonPath, JSON.stringify(installJson, null, 4), 'utf8');
+
+    return true
+}
+
+const checkInstallJson = async () => {
+
     const installJsonPath = pathNow + '/app/install.json';
 
     if(!await fs.existsSync(installJsonPath)) {
@@ -106,18 +164,10 @@ const addToInstallJson = async (slug = '') => {
         installJson = []
     }
 
-    const searchPackage = installJson.find(n => n.name === slug);
-
-    if(!searchPackage) {
-        installJson.push({
-            name: slug,
-            version: 1
-        });
+    return {
+        installJsonPath,
+        installJson
     }
-
-    await fs.writeFileSync(installJsonPath, JSON.stringify(installJson, null, 4), 'utf8');
-
-    return true
 }
 
 const checkPackage = async (slug = '', user = {}) => {
@@ -139,5 +189,6 @@ const checkPackage = async (slug = '', user = {}) => {
 }
 
 module.exports = {
-    upload
+    upload,
+    update
 }

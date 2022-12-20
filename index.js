@@ -6,7 +6,7 @@ const { create:createProject } = require('./bin/create');
 const { reset:dbReset, migrate:dbMigrate, seed:dbSeed } = require('./bin/db')
 const { create:createModule, del:deleteModule } = require('./bin/module');
 const { create:createTools } = require('./bin/tools');
-const { upload:uploadModule } = require('./bin/upload');
+const { upload:uploadModule, update:updateModule } = require('./bin/upload');
 const packageInfo = require('./package.json');
 
 program
@@ -62,5 +62,12 @@ program
     .argument('name', 'Module name (string) (required)')
     .argument('slug', 'Slug (string) (required)')
     .action(uploadModule)
+
+program
+    .command('update:module')
+    .description('Update module to base.al')
+    .argument('module_directory', 'Module directory name (string) (required)')
+    .argument('slug', 'Slug (string) (required)')
+    .action(updateModule)
 
 program.parse()
