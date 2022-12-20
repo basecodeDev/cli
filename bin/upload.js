@@ -120,6 +120,44 @@ const updatePackage = async (path, directory, slug, user = {}) => {
     }
 }
 
+const get = async (slug = undefined) => {
+
+    const user = await login();
+
+    if(user) {
+
+        const source_dir = pathNow + '/app/modules/' + slug;
+
+        if(!source_dir) {
+            const package = await checkPackage(slug, user);
+
+            if(package) {
+
+                const getLastVersion = package.versions.sort((a,b) => b.version_id - a.version_id)[0];
+
+                const { data } = await axios.get(baseUrl + 'packages/download/' + package.package_id + '/' + getLastVersion.version_id, {
+                    headers: {
+                        'token': user.token
+                    },
+                    responseType: 'stream'
+                });
+
+                console.log(data)
+
+            } else {
+                log.error('Package not found');
+            }
+
+        } else {
+            log.error('Package already exists');
+        }
+
+    } else {
+        log.error('Login failed');
+        return;
+    }
+}
+
 const addToInstallJson = async (path = '', slug = '', version = 1) => {
 
     const { installJsonPath, installJson } = await checkInstallJson();
@@ -228,5 +266,6 @@ const checkPackage = async (slug = '', user = {}) => {
 
 module.exports = {
     upload,
-    update
+    update,
+    get
 }
