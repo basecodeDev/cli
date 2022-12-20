@@ -7,13 +7,13 @@ const FormData = require('form-data');
 const pathNow = process.cwd()
 const baseUrl = 'https://dev.base.al/api/v1/'
 
-const upload = async (args = undefined) => {
+const upload = async (directory = undefined, name = undefined, slug = undefined) => {
 
     const user = await login();
 
     if(user) {
 
-        const module_name = args || 'construct';
+        const module_name = directory || 'construct';
 
         const source_dir = pathNow + '/app/modules/' + module_name;
         // const source_dir = pathNow + '/bin'; // For testing
@@ -31,7 +31,7 @@ const upload = async (args = undefined) => {
                 console.log('archiver has been finalized and the output file descriptor has closed.');
                 
                 if(archive.pointer() > 0) {
-                    uploadPackage(pathNow + '/dist/' + module_name + '.zip', module_name, user)
+                    uploadPackage(pathNow + '/dist/' + module_name + '.zip', name, slug, user)
                     log.success('Module uploaded successfully');
                 }
             });
@@ -56,7 +56,7 @@ const upload = async (args = undefined) => {
     }
 }
 
-const uploadPackage = async (path, module_name, user = {}) => {
+const uploadPackage = async (path, name, slug, user = {}) => {
 
     const form = new FormData();
     const config = {
@@ -66,18 +66,46 @@ const uploadPackage = async (path, module_name, user = {}) => {
         }
     }
 
-    form.append('name', module_name);
-    form.append('slug', module_name);
+    form.append('name', name);
+    form.append('slug', slug);
     form.append('package', fs.createReadStream(path));
 
     const { data } = await axios.post(baseUrl + 'packages/add', form, config);
 
     if(data.status) {
+        addToInstallJson(slug);
         log.success('Package has been uploaded successfully');
     } else {
         log.error('Package upload failed');
         log.error(data.messages.join(','))
     }
+}
+
+const addToInstallJson = async (slug = '') => {
+    
+    const installJsonPath = pathNow + '/app/install.json';
+
+    if(!await fs.existsSync(installJsonPath)) {
+        await fs.writeFileSync(installJsonPath, '[]', 'utf8');
+    }
+
+    let installJson = []
+
+    try {
+        installJson = await fs.readFileSync(installJsonPath, 'utf8');
+        installJson = JSON.parse(installJson);   
+    } catch (error) {
+        installJson = []
+    }
+
+    installJson.push({
+        name: slug,
+        version: 1
+    });
+
+    await fs.writeFileSync(installJsonPath, JSON.stringify(installJson, null, 4), 'utf8');
+
+    return true
 }
 
 module.exports = {

@@ -4,7 +4,7 @@
 const { program } = require('commander');
 const { create:createProject } = require('./bin/create');
 const { reset:dbReset, migrate:dbMigrate, seed:dbSeed } = require('./bin/db')
-const { create:createModule, del:deleteModule, add:addModule, install:installModules, update:updateModules } = require('./bin/module');
+const { create:createModule, del:deleteModule } = require('./bin/module');
 const { create:createTools } = require('./bin/tools');
 const { upload:uploadModule } = require('./bin/upload');
 const packageInfo = require('./package.json');
@@ -35,21 +35,6 @@ program
     .command('db:seed')
     .description('Database tables will fill with seed data')
     .action(dbSeed)
-
-program
-    .command('add:module')
-    .description('Add existing module to app/install.json')
-    .action(addModule)
-
-program
-    .command('install:module')
-    .description('Install modules from app/install.json file')
-    .action(installModules)
-
-program
-    .command('update:module')
-    .description('Update modules from app/install.json file')
-    .action(updateModules)
     
 program
     .command('create:module')
@@ -73,7 +58,9 @@ program
 program
     .command('upload:module')
     .description('Upload module to base.al')
+    .argument('module_directory', 'Module directory name (string) (required)')
     .argument('name', 'Module name (string) (required)')
+    .argument('slug', 'Slug (string) (required)')
     .action(uploadModule)
 
 program.parse()
