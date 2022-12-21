@@ -144,8 +144,35 @@ const get = async (slug = undefined, directory = undefined) => {
                 });
 
                 if (data instanceof stream.Readable) {
-                    
-                    console.log(data)
+
+                    const source_path = pathNow + '/dist/' + directory + '.zip';
+
+                    if(!await fs.existsSync(pathNow + '/dist')) {
+                        await fs.mkdirSync(pathNow + '/dist');
+                    }
+
+                    if(!await fs.existsSync(source_path)) {
+                        await fs.unlinkSync(source_path);
+                    }
+
+                    const createStream = await fs.createWriteStream(source_path);
+
+                    data.pipe(createStream);
+
+                    createStream.on('finish', async () => {
+
+                        const extract = require('extract-zip')
+
+                        await extract(source_path, { dir: pathNow + '/app/modules/' + directory }, async (err) => {
+                            if(err) {
+                                log.error('Package download failed');
+                            } else {
+                                log.success('Package has been downloaded successfully');
+                                addToInstallJson(directory, slug, getLastVersion.version_id);
+                            }
+                        })
+
+                    });
 
                 } else {
                     log.error('Package download failed');
@@ -165,7 +192,7 @@ const get = async (slug = undefined, directory = undefined) => {
     }
 }
 
-const addToInstallJson = async (path = '', slug = '', version = 1) => {
+const addToInstallJson = async (directory = '', slug = '', version = 1) => {
 
     const { installJsonPath, installJson } = await checkInstallJson();
 
@@ -174,11 +201,11 @@ const addToInstallJson = async (path = '', slug = '', version = 1) => {
     if(!searchPackage) {
         installJson.push({
             name: slug,
-            directory : path,
+            directory : directory,
             version: version
         });
     } else {
-        searchPackage.directory = path;
+        searchPackage.directory = directory;
         searchPackage.version = version;
     }
 
