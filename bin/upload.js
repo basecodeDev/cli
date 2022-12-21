@@ -166,6 +166,7 @@ const get = async (slug = undefined, directory = undefined) => {
                             await extract(source_path, { dir: pathNow + '/app/modules/' + directory }, async (err) => {
                                 if(err) {
                                     log.error('Package extract failed');
+                                    return false;
                                 } else {
                                     log.success('Package has been extract successfully');
                                     addToInstallJson(directory, slug, getLastVersion.version_id);
@@ -173,26 +174,32 @@ const get = async (slug = undefined, directory = undefined) => {
                             })
                         } else {
                             log.error('Package download failed');
+                            return false;
                         }
 
                     });
 
                 } else {
                     log.error('Package version not exists');
+                    return false;
                 }
 
             } else {
                 log.error('Package not exists');
+                return false;
             }
 
         } else {
             log.error('Package already exists');
+            return false;
         }
 
     } else {
         log.error('Login failed');
-        return;
+        return false;
     }
+
+    return true;
 }
 
 const addToInstallJson = async (directory = '', slug = '', version = 1) => {
