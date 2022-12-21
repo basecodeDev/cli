@@ -144,7 +144,9 @@ const get = async (slug = undefined, directory = undefined) => {
                 });
 
                 if (data instanceof stream.Readable) {
+                    
                     console.log(data)
+
                 } else {
                     log.error('Package download failed');
                 }
