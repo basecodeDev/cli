@@ -142,7 +142,11 @@ const get = async (slug = undefined, directory = undefined) => {
                     responseType: 'stream'
                 });
 
-                console.log(data)
+                if (!(data instanceof stream.Readable)){
+                    console.log(data)
+                } else {
+                    log.error('Package download failed');
+                }
 
             } else {
                 log.error('Package not found');
