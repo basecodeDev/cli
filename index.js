@@ -4,9 +4,9 @@
 const { program } = require('commander');
 const { create:createProject } = require('./bin/create');
 const { reset:dbReset, migrate:dbMigrate, seed:dbSeed } = require('./bin/db')
-const { create:createModule, del:deleteModule } = require('./bin/module');
+const { create:createPackage, del:deletePackage } = require('./bin/package');
 const { create:createTools } = require('./bin/tools');
-const { upload:uploadModule, update:updateModule, get:getModule } = require('./bin/upload');
+const { upload:uploadPackage, update:updatePackage, get:getPackage, install:installPackages } = require('./bin/upload');
 const packageInfo = require('./package.json');
 
 program
@@ -37,18 +37,18 @@ program
     .action(dbSeed)
     
 program
-    .command('create:module')
+    .command('create:package')
     .option('-d, --directory <directory>', 'Directory name')
     .option('-db, --database <database>', 'Database table name')
-    .option('-mn, --modulename <modulename>', 'Module name')
-    .description('Module will create inside of app directory')
-    .action(createModule)
+    .option('-pn, --packagename <packagename>', 'Package name')
+    .description('Package will create inside of app directory')
+    .action(createPackage)
 
 program
-    .command('delete:module')
+    .command('delete:package')
     .option('-d, --directory <directory>', 'Directory name')
-    .description('Module will delete inside of app directory')
-    .action(deleteModule)
+    .description('Package will delete inside of app directory')
+    .action(deletePackage)
 
 program
     .command('create:tools')
@@ -56,25 +56,32 @@ program
     .action(createTools)
 
 program
-    .command('upload:module')
-    .description('Upload module to base.al')
-    .argument('module_directory', 'Module directory name (string) (required)')
-    .argument('name', 'Module name (string) (required)')
+    .command('upload:package')
+    .description('Upload package to base.al')
+    .argument('package_directory', 'Package directory name (string) (required)')
+    .argument('name', 'Package name (string) (required)')
     .argument('slug', 'Slug (string) (required)')
-    .action(uploadModule)
+    .action(uploadPackage)
 
 program
-    .command('update:module')
-    .description('Update module to base.al')
-    .argument('module_directory', 'Module directory name (string) (required)')
+    .command('update:package')
+    .description('Update package to base.al')
+    .argument('package_directory', 'Package directory name (string) (required)')
     .argument('slug', 'Slug (string) (required)')
-    .action(updateModule)
+    .action(updatePackage)
 
 program
-    .command('get:module')
-    .description('Get module to base.al')
+    .command('get:package')
+    .description('Get package to base.al')
     .argument('slug', 'Slug (string) (required)')
     .argument('directory', 'Directory (string) (required)')
-    .action(getModule)
+    .option('-vs, --vers <vers>', 'Version (string) (optional)', 'latest')
+    .action(getPackage)
+
+program
+    .command('install:packages')
+    .option('-f, --force <force>', 'Force install (boolean) (optional)', false)
+    .description('Install all packages from app/install.json')
+    .action(installPackages)
 
 program.parse()
