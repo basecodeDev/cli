@@ -147,23 +147,26 @@ const get = async (slug = undefined, directory = undefined, options = undefined,
                 try {
                     const { data } = await axios.get(baseUrl + 'packages/download/' + package.slug + '/' + getLastVersion.version_id, {
                         headers: {
-                            'token': user.token
+                            'token': user.token,
                         },
                         timeout: 0,
-                        maxContentLength: Infinity,
-                        maxBodyLength: Infinity
+                        responseType: 'arraybuffer'
                     })
 
-                    dataResponse = data;
+                    try {
+                        let convertStatus = Buffer.from(data).toString('utf8');
+                        convertStatus = JSON.parse(convertStatus);
+                        if(convertStatus.status) {
+                            dataResponse = { status: false }
+                        }
 
-                    console.log(dataResponse);
+                    } catch (error) {
+                        dataResponse = { status: true, data: { file: data } }
+                    }
 
                 } catch (error) {
                     console.log(error);
-                    log.error(slug + ' package request failed')
-                    dataResponse = {
-                        status: false
-                    }
+                    dataResponse = { status: false }
                 }
 
                 if (dataResponse.status) {
@@ -176,7 +179,7 @@ const get = async (slug = undefined, directory = undefined, options = undefined,
                         await fs.unlinkSync(source_path);
                     }
 
-                    await fs.writeFileSync(source_path, new Buffer.from(dataResponse.data.file));
+                    await fs.writeFileSync(source_path, dataResponse.data.file);
 
                     if(await fs.existsSync(source_path)) {
 
