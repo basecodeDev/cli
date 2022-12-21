@@ -2,6 +2,7 @@ const log = require('log-beautify');
 const fs = require('fs');
 const axios = require('axios');
 const archiver = require('archiver');
+const extract = require('extract-zip')
 const stream = require('stream')
 const { login } = require('../lib/user')
 const FormData = require('form-data');
@@ -160,8 +161,6 @@ const get = async (slug = undefined, directory = undefined) => {
                     data.pipe(createStream);
 
                     createStream.on('finish', async () => {
-
-                        const extract = require('extract-zip')
 
                         await extract(source_path, { dir: pathNow + '/app/modules/' + directory }, async (err) => {
                             if(err) {
