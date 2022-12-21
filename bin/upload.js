@@ -153,7 +153,10 @@ const get = async (slug = undefined, directory = undefined, options = undefined,
 
                     dataResponse = data;
 
+                    console.log(dataResponse);
+
                 } catch (error) {
+                    log.error(slug + ' package request failed')
                     dataResponse = {
                         status: false
                     }
