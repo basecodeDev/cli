@@ -6,3 +6,4 @@ construct
 dist
 data
 app
+yarn.lock
