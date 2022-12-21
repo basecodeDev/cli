@@ -1,6 +1,6 @@
 {
   "name": "baseconstruct",
-  "version": "1.0.94",
+  "version": "1.0.95",
   "description": "Basecode cli will create construct project and create modules.",
   "main": "bin/index.js",
   "bin": {
