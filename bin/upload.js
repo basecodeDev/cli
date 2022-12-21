@@ -152,7 +152,7 @@ const get = async (slug = undefined, directory = undefined) => {
                         await fs.mkdirSync(pathNow + '/dist');
                     }
 
-                    if(!await fs.existsSync(source_path)) {
+                    if(await fs.existsSync(source_path)) {
                         await fs.unlinkSync(source_path);
                     }
 
