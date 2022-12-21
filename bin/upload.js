@@ -158,7 +158,7 @@ const get = async (slug = undefined, directory = undefined) => {
 
                     const createStream = await fs.createWriteStream(source_path);
 
-                    createStream.pipe(data);
+                    data.pipe(createStream);
 
                     createStream.on('finish', async () => {
 
