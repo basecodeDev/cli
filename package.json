@@ -28,6 +28,7 @@
     "commander": "^9.4.1",
     "log-beautify": "^1.2.0",
     "prompt-sync": "^4.2.0",
-    "shelljs": "^0.8.5"
+    "shelljs": "^0.8.5",
+    "stream": "^0.0.2"
   }
 }

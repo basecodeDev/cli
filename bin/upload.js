@@ -2,6 +2,7 @@ const log = require('log-beautify');
 const fs = require('fs');
 const axios = require('axios');
 const archiver = require('archiver');
+const stream = require('stream')
 const { login } = require('../lib/user')
 const FormData = require('form-data');
 const pathNow = process.cwd()
