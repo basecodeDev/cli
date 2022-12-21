@@ -158,27 +158,31 @@ const get = async (slug = undefined, directory = undefined) => {
 
                     const createStream = await fs.createWriteStream(source_path);
 
-                    data.pipe(createStream);
+                    createStream.pipe(data);
 
                     createStream.on('finish', async () => {
 
-                        await extract(source_path, { dir: pathNow + '/app/modules/' + directory }, async (err) => {
-                            if(err) {
-                                log.error('Package download failed');
-                            } else {
-                                log.success('Package has been downloaded successfully');
-                                addToInstallJson(directory, slug, getLastVersion.version_id);
-                            }
-                        })
+                        if(await fs.existsSync(source_path)) {
+                            await extract(source_path, { dir: pathNow + '/app/modules/' + directory }, async (err) => {
+                                if(err) {
+                                    log.error('Package extract failed');
+                                } else {
+                                    log.success('Package has been extract successfully');
+                                    addToInstallJson(directory, slug, getLastVersion.version_id);
+                                }
+                            })
+                        } else {
+                            log.error('Package download failed');
+                        }
 
                     });
 
                 } else {
-                    log.error('Package download failed');
+                    log.error('Package version not exists');
                 }
 
             } else {
-                log.error('Package not found');
+                log.error('Package not exists');
             }
 
         } else {
