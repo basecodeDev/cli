@@ -148,7 +148,10 @@ const get = async (slug = undefined, directory = undefined, options = undefined,
                     const { data } = await axios.get(baseUrl + 'packages/download/' + package.slug + '/' + getLastVersion.version_id, {
                         headers: {
                             'token': user.token
-                        }
+                        },
+                        timeout: 0,
+                        maxContentLength: Infinity,
+                        maxBodyLength: Infinity
                     })
 
                     dataResponse = data;
