@@ -7,7 +7,7 @@ const prompt = require("prompt-sync")({ sigint: true });
 const { login } = require('../lib/user')
 const FormData = require('form-data');
 const pathNow = process.cwd()
-const baseUrl = 'https://dev.base.al/api/v1/'
+const devBaseUrl = 'https://api.base.al/v1/dev'
 
 const upload = async (directory = undefined, name = undefined, slug = undefined) => {
 
@@ -53,7 +53,7 @@ const uploadPackage = async (path, directory, name, slug, user = {}) => {
     form.append('slug', slug);
     form.append('package', fs.createReadStream(path));
 
-    const { data } = await axios.post(baseUrl + 'packages/add', form, config);
+    const { data } = await axios.post(devBaseUrl + 'packages/add', form, config);
 
     if(data.status) {
         const version = await addToInstallJson(directory, slug, 1);
@@ -109,7 +109,7 @@ const updatePackage = async (path, directory, slug, user = {}) => {
     form.append('slug', slug);
     form.append('package', fs.createReadStream(path));
 
-    const { data } = await axios.post(baseUrl + 'packages/add', form, config);
+    const { data } = await axios.post(devBaseUrl + 'packages/add', form, config);
 
     if(data.status) {
         const getLastVersion = package.versions.sort((a,b) => b.version_id - a.version_id)[0];
@@ -145,7 +145,7 @@ const get = async (slug = undefined, directory = undefined, options = undefined,
                 }
 
                 try {
-                    const { data } = await axios.get(baseUrl + 'packages/download/' + package.slug + '/' + getLastVersion.version_id, {
+                    const { data } = await axios.get(devBaseUrl + 'packages/download/' + package.slug + '/' + getLastVersion.version_id, {
                         headers: {
                             'token': user.token,
                         },
@@ -460,7 +460,7 @@ const checkPackage = async (slug = '', user = {}) => {
         }
     }
 
-    const { data } = await axios.get(baseUrl + 'packages/' + slug, config);
+    const { data } = await axios.get(devBaseUrl + 'packages/' + slug, config);
 
     if(data.status) {
         return data.data;
